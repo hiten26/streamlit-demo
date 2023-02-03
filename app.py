@@ -1,6 +1,7 @@
 import base64
 import requests
 import json
+import os
 
 import streamlit as st
 from streamlit_option_menu import option_menu
@@ -80,7 +81,7 @@ if choose == "Machine Learning":
 elif choose == "Image Analysis":
     st.write("Coming soon...")
 elif choose == "Text Analysis":
-    ip = "http://54.194.86.165"
+    ip = os.environ.get("ip")
     resume_ner_url = ip + ":443/resume-ner"
     senti_url = ip + ":443/sentiment"
     sent_score_url = ip + ":443/sent-sim"
