@@ -71,10 +71,10 @@ if choose == "Machine Learning":
                                                           ))
     with col2:
         if selected_sub_area == "Customer churn prediction":
-            p = open("../new/streamlit-demo/data/customer_churn.html")
+            p = open("./data/customer_churn.html")
             components.html(p.read(), width=1000, height=500, scrolling=True)
         elif selected_sub_area == "Demand Forecasting for cab":
-            p = open("../new/streamlit-demo/data/demand_forecasting_for_cab.html")
+            p = open("./data/demand_forecasting_for_cab.html")
             components.html(p.read(), width=1000, height=500, scrolling=True)
 
 elif choose == "Image Analysis":
@@ -87,6 +87,8 @@ elif choose == "Text Analysis":
                                                           'Text Summarization', 'Sentiment Analysis',
                                                           'Text Semantic Similarity', 'Knowledge Graph Generator',
                                                           'Reading Comprehension'))
+    if selected_sub_area in ["Knowledge Graph Generator', 'Reading Comprehension"]:
+        st.write("Coming soon . . . ")
     if selected_sub_area == "Text Semantic Similarity":
         with col2:
             input_article_1 = st.selectbox("Example inputs", ('<select>',
