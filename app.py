@@ -1,15 +1,27 @@
 import base64
 import requests
 import json
-import os
 
 import streamlit as st
 from streamlit_option_menu import option_menu
 
 from streamlit_lottie import st_lottie
 from streamlit_lottie import st_lottie_spinner
+import streamlit.components.v1 as components
+
 
 st.set_page_config(page_title='Hitendra Vaghela', page_icon='🖖', initial_sidebar_state="collapsed", layout="wide")
+
+#ip = "http://" + os.environ.get("ip")
+
+ip = "http://"
+resume_ner_url = ip + ":443/resume-ner"
+senti_url = ip + ":443/sentiment"
+sent_score_url = ip + ":443/sent-sim"
+text_summarization_url = ip + ":443/text-summary"
+medical_ner_url = ip + ":8080/medical-ner"
+generic_ner_url = ip + ":8080/generic-ner"
+print("ip: ", ip)
 
 
 def load_lottiefile(filepath: str):
@@ -23,73 +35,51 @@ def get_image_as_base64(file):
     return base64.b64encode(data).decode()
 
 
-img = get_image_as_base64("./images/bg2.jpeg")
 lottie_pos = load_lottiefile("./lottie/107795-positive.json")
 lottie_neg = load_lottiefile("./lottie/19640-negative.json")
 lottie_summary = load_lottiefile("./lottie/90349-summary.json")
-
+# MainMenu {visibility: hidden;}
 # links, hide side bar and hide hamburger menu
 html_snippet = """
     <style>
-[data-testid=column]:nth-of-type(1) [data-testid=stVerticalBlock]{gap: 0rem;}        
-div[data-testid="stSidebarNav"] {display: none;}
-#MainMenu {visibility: hidden;}
-[data-testid="stAppViewContainer"]
-{{
-background-image: url("data:image/jpg;base64,{img}");
-background-size: cover;
-}}
-a:link {
-  color: #02ab21;
-  background-color: transparent;
-  text-decoration: none;
-}
+        [data-testid=column]:nth-of-type(1) [data-testid=stVerticalBlock]{gap: 0rem;}        
+        div[data-testid="stSidebarNav"] {display: none;}
 
-a:visited {
-  color: #02ab21;
-  background-color: transparent;
-  text-decoration: none;
-}
-
-a:hover {
-  color: red;
-  background-color: transparent;
-  text-decoration: underline;
-}
-
-a:active {
-  color: yellow;
-  background-color: transparent;
-  text-decoration: underline;
-}
-</style>
+        [data-testid="stAppViewContainer"]
+    </style>
 """
 st.markdown(html_snippet, unsafe_allow_html=True)
 
 st.title("Hitendra Vaghela")
-choose = option_menu("Data scientist", ["Machine Learning", "Text Analysis", "Image Analysis"],
-                     icons=['house', 'file-person', 'keyboard'],
+choose = option_menu("Data scientist", ["Text Analysis", "Machine Learning",  "Image Analysis"],
+                     icons=['keyboard', 'house', 'file-person'],
                      menu_icon="laptop", default_index=0, orientation="horizontal",
-                     styles={"container": {"background-color": "#808080"},  # fafafa
-                             "icon": {"color": "orange", "font-size": "25px"},
+                     styles={"container": {"background-color": "#007bbf"},  # light blue
+                             "menu-title": {"color": "white"},
+                             "menu-icon": {"color": "pink"},
+                             "icon": {"color": "pink", "font-size": "25px"},
                              "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px",
-                                          "--hover-color": "#fafafa"},  # white
+                                          "--hover-color": "#fafafa", "color": "white"},  # white
                              "nav-link-selected": {"background-color": "#02ab21"}})  # green
 
 if choose == "Machine Learning":
-    st.write("Coming soon...")
+    col1, col2 = st.columns([7, 25])
+
+    with col1:
+        selected_sub_area = col1.radio("Select problem", ('Customer churn prediction',
+                                                          'Demand Forecasting for cab',
+                                                          ))
+    with col2:
+        if selected_sub_area == "Customer churn prediction":
+            p = open("../new/streamlit-demo/data/customer_churn.html")
+            components.html(p.read(), width=1000, height=500, scrolling=True)
+        elif selected_sub_area == "Demand Forecasting for cab":
+            p = open("../new/streamlit-demo/data/demand_forecasting_for_cab.html")
+            components.html(p.read(), width=1000, height=500, scrolling=True)
+
 elif choose == "Image Analysis":
     st.write("Coming soon...")
 elif choose == "Text Analysis":
-    ip = "http://" + os.environ.get("ip")
-    resume_ner_url = ip + ":443/resume-ner"
-    senti_url = ip + ":443/sentiment"
-    sent_score_url = ip + ":443/sent-sim"
-    text_summarization_url = ip + ":443/text-summary"
-    medical_ner_url = ip + ":8080/medical-ner"
-    generic_ner_url = ip + ":8080/generic-ner"
-    print("ip: ", ip)
-
     col1, col2 = st.columns([7, 25])
 
     with col1:
@@ -134,7 +124,7 @@ elif choose == "Text Analysis":
                     score_ = str(":red[") + str(round(score, 3)) + str("]")
                     st.markdown(score_)
 
-    if selected_sub_area == "Text Summarization":
+    elif selected_sub_area == "Text Summarization":
         with col2:
             input_article_1 = st.selectbox("Example inputs", ('<select>',
                                                               'The Bharat Jodo Yatra went from south to north but it '
@@ -156,8 +146,8 @@ elif choose == "Text Analysis":
                                                               'Product is ok I guess'
                                                               ))
     elif selected_sub_area == "Keywords extractor":
-        with col1:
-            selected_ner = col1.radio("Select problem", ('Generic', 'Resume', 'Medical'))
+        with col2:
+            selected_ner = col2.radio("Select problem", ('Generic', 'Resume', 'Medical'), horizontal = True)
         if selected_ner == "Resume":
             with col2:
                 input_article_1 = st.selectbox("Example inputs", ('<select>',
