@@ -12,17 +12,15 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title='Hitendra Vaghela', page_icon='🖖', initial_sidebar_state="collapsed", layout="wide")
 
-#ip = "http://" + os.environ.get("ip")
+ip = "http://" + os.environ.get("ip")
 
-ip = "http://"
+#ip = "http://##.###.###.##"
 resume_ner_url = ip + ":443/resume-ner"
-senti_url = ip + ":443/sentiment"
-sent_score_url = ip + ":443/sent-sim"
-text_summarization_url = ip + ":443/text-summary"
-medical_ner_url = ip + ":8080/medical-ner"
-generic_ner_url = ip + ":8080/generic-ner"
-print("ip: ", ip)
-
+senti_url = ip + ":80/sentiment"
+sent_score_url = ip + ":80/sent-sim"
+text_summarization_url = ip + ":80/text-summary"
+medical_ner_url = ip + ":80/medical-ner"
+generic_ner_url = ip + ":80/generic-ner"
 
 def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
