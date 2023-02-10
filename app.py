@@ -87,7 +87,8 @@ elif choose == "Text Analysis":
                                                           'Text Semantic Similarity', 'Knowledge Graph Generator',
                                                           'Reading Comprehension'))
     if selected_sub_area == "Knowledge Graph Generator" or selected_sub_area == 'Reading Comprehension':
-        st.warning("Coming soon . . . ")
+        with col2:
+            st.warning("Coming soon . . . ")
         st.stop()
     elif selected_sub_area == "Text Semantic Similarity":
         with col2:
