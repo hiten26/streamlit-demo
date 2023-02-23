@@ -50,7 +50,7 @@ html_snippet = """
 st.markdown(html_snippet, unsafe_allow_html=True)
 
 st.title("Hitendra Vaghela")
-choose = option_menu("Data scientist", ["Text Analysis", "Machine Learning", "Image Analysis"],
+choose = option_menu("Data scientist", ["Text Analysis", "Machine Learning", "Dashboards"],
                      icons=['keyboard', 'house', 'file-person'],
                      menu_icon="laptop", default_index=0, orientation="horizontal",
                      styles={"container": {"background-color": "#007bbf"},  # light blue
@@ -76,8 +76,20 @@ if choose == "Machine Learning":
             p = open("./data/demand_forecasting_for_cab.html")
             components.html(p.read(), width=1000, height=500, scrolling=True)
 
-elif choose == "Image Analysis":
-    st.warning("Coming soon . . . ")
+elif choose == "Dashboards":
+    col1, col2 = st.columns([7, 25])
+
+    with col1:
+        selected_sub_area = col1.radio("Select problem", ('Customer Analysis',
+                                                          'Amazon Prime: Overview',
+                                                          ))
+    with col2:
+        if selected_sub_area == "Customer Analysis":
+            p = open("./data/customer_analysis_dashboard.html")
+            components.html(p.read(), width=1000, height=800, scrolling=True)
+        elif selected_sub_area == "Amazon Prime: Overview":
+            p = open("./data/amazon_prime_dashboard.html")
+            components.html(p.read(), width=1000, height=800, scrolling=True)
 elif choose == "Text Analysis":
     col1, col2 = st.columns([7, 25])
 
