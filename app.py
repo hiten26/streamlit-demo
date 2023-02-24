@@ -70,8 +70,9 @@ if choose == "Machine Learning":
                                                           ))
     with col2:
         if selected_sub_area == "Customer churn prediction":
-            p = open("./data/customer_churn.html")
-            components.html(p.read(), width=1000, height=500, scrolling=True)
+            st.warning("Coming soon. . .")
+            #p = open("./data/customer_churn.html")
+            #components.html(p.read(), width=1000, height=500, scrolling=True)
         elif selected_sub_area == "Demand Forecasting for cab":
             p = open("./data/demand_forecasting_for_cab.html")
             components.html(p.read(), width=1000, height=500, scrolling=True)
