@@ -16,11 +16,11 @@ ip = "http://" + os.environ.get("ip")
 
 # ip = "http://##.###.###.##"
 resume_ner_url = ip + ":443/resume-ner"
-senti_url = ip + ":80/sentiment"
-sent_score_url = ip + ":80/sent-sim"
-text_summarization_url = ip + ":80/text-summary"
-medical_ner_url = ip + ":80/medical-ner"
-generic_ner_url = ip + ":80/generic-ner"
+senti_url = ip + ":443/sentiment"
+sent_score_url = ip + ":443/similarity"
+text_summarization_url = ip + ":443/summarize"
+medical_ner_url = ip + ":443/medical-ner"
+generic_ner_url = ip + ":443/generic-ner"
 
 
 def load_lottiefile(filepath: str):
@@ -70,9 +70,9 @@ if choose == "Machine Learning":
                                                           ))
     with col2:
         if selected_sub_area == "Customer churn prediction":
-            st.warning("Coming soon. . .")
-            #p = open("./data/customer_churn.html")
-            #components.html(p.read(), width=1000, height=500, scrolling=True)
+            #st.warning("Coming soon. . .")
+            p = open("./data/customer_churn.html")
+            components.html(p.read(), width=1000, height=500, scrolling=True)
         elif selected_sub_area == "Demand Forecasting for cab":
             p = open("./data/demand_forecasting_for_cab.html")
             components.html(p.read(), width=1000, height=500, scrolling=True)
@@ -105,12 +105,12 @@ elif choose == "Text Analysis":
         st.stop()
     elif selected_sub_area == "Text Semantic Similarity":
         with col2:
-            input_article_1 = st.selectbox("Example inputs", ('<select>',
+            input_article_1 = st.selectbox("Example input1: ", ('<select>',
                                                               'The cat is sitting on the mat.',
                                                               'I am running late for my meeting.',
                                                               'I am going to the store.'
                                                               ), key=1)
-            input_article_2 = st.selectbox("Example inputs", ('<select>',
+            input_article_2 = st.selectbox("Example input2: ", ('<select>',
                                                               'The feline is lounging on the rug.',
                                                               'I am behind schedule for my appointment.',
                                                               'I am going to the park.'
@@ -222,16 +222,18 @@ elif choose == "Text Analysis":
         #max_ = col2.slider('Select maximum words in answer', 50, 500, step=10, value=150)
         #min_ = col2.slider('Select minimum words in answer', 10, 450, step=10, value=50)
         #do_sample_ = col2.checkbox("Do sample", value=False)
-        max_ = 150
-        min_ = 20
-        data = {"text": input_article,
-                "max": max_,
-                "min": min_,
-                "do_sample": False}
+        #max_ = 150
+        #min_ = 20
+        #data = {"text": input_article,
+        #        "max": max_,
+        #        "min": min_,
+        #        "do_sample": False}
+        data = { "text": input_article}
 
         if col2.button("Submit", key=11):
             with col2:
                 with st_lottie_spinner(lottie_summary, loop=True, key="success", height=100, width=100, speed=1):
+                    st.write(text_summarization_url)
                     response = requests.post(text_summarization_url, json=data)
                     d = response.json()
                     col2.text_area(label="", value=d['summary'], height=100)
@@ -242,11 +244,11 @@ elif choose == "Text Analysis":
             response = requests.post(senti_url, json=data)
             d = response.json()
             with col2:
-                if d["label"] == "POSITIVE":
+                if d["sentiment"] == "POSITIVE":
                     st_lottie(lottie_pos, loop=True, key="success", height=100, width=100, speed=1)
                     score_ = str(":green[") + str(round(d["score"], 3)) + str("]")
                     st.markdown(score_)
-                elif d["label"] == "NEGATIVE":
+                elif d["sentiment"] == "NEGATIVE":
                     st_lottie(lottie_neg, loop=False, key="neg", height=100, width=100, speed=1)
                     score_ = str(":red[") + str(round(d["score"], 3)) + str("]")
                     st.markdown(score_)
