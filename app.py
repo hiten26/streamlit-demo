@@ -166,6 +166,9 @@ elif choose == "Text Analysis":
             selected_ner = col2.radio("Select text domain ", ('Generic', 'Resume', 'Medical'), horizontal=True)
         if selected_ner == "Resume":
             with col2:
+                st.warning("Coming soon . . . ")
+            st.stop()
+            with col2:
                 input_article_1 = st.selectbox("Example inputs", ('<select>',
                                                                   "Rahul Mahajan Application Development Associate - "
                                                                   "Accenture  Bengaluru, Karnataka - Email me on "
