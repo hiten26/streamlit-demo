@@ -233,7 +233,6 @@ elif choose == "Text Analysis":
         if col2.button("Submit", key=11):
             with col2:
                 with st_lottie_spinner(lottie_summary, loop=True, key="success", height=100, width=100, speed=1):
-                    st.write(text_summarization_url)
                     response = requests.post(text_summarization_url, json=data)
                     d = response.json()
                     col2.text_area(label="", value=d['summary'], height=100)
